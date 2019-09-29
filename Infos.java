@@ -38,6 +38,15 @@ public class Infos {
         id = this.id;
     }
 
+    public int getAccId() {
+        return accId;
+    }
+
+    public void setAccId(int accId) {
+        this.accId = accId;
+    }
+    
+    
     public String getfName() {
         return fName;
     }
