@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package trycatchExperiment;
+package enrollcherv;
 
 import java.util.Scanner;
 
@@ -21,11 +21,18 @@ public class Infos {
     private int ageSuc = 0;
     private String num = "";
     private int id;
-
+    private int accId;
+    
     public Infos() {
     }
     
-    
+    public Infos(int id, int accId, String fName, String lName, String num){
+        this.id = id;
+        this.accId = accId;
+        this.fName = fName;
+        this.lName = lName;
+        this.num = num;
+    }
     
     public Infos(int id) {
         id = this.id;
@@ -141,6 +148,6 @@ public class Infos {
 
     @Override
     public String toString() {
-        return String.format("%-20s%-20s%-20s%-20s", id, fName, lName, num);
+        return String.format("%-10s%-18s%-20s%-20s%-20s", id,accId, fName, lName, num);
     }
 }
