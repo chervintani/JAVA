@@ -74,6 +74,7 @@ public class StudentEnroll {
     String delInfo = "";
     Infos info = new Infos();
     Schedules schedObj = new Schedules();
+//    Accounts accObj = new Accounts();
     ArrayList<String> accountInfo = new ArrayList<String>();
     ArrayList<Accounts> acc = new ArrayList<Accounts>();
     ArrayList<Infos> infoList = new ArrayList<Infos>();
@@ -90,13 +91,21 @@ public class StudentEnroll {
                 case "1":
                     account.userVal();
                     account.passVal();
+//                    accObj.setId(account.getId());
+                    Accounts ab = new Accounts(account.getId(), account.getUsername(), account.getPass());
+                    acc.add(ab);
                     account.reset();
                     System.out.println("Do you want to add personal information? y/n");
                     String cho = scan.nextLine();
                     if (cho.equals("y") || cho.equals("yes") || cho.equals("YES")) {
+                        info.fNameVal();
                         info.lNameVal();
                         info.ageVal();
+                        info.setAccId(account.getId());
+                        Infos i = new Infos(info.getId(), info.getAccId(), info.getfName(), info.getlName(), info.getNum());
+                        infoList.add(i);
                         info.reset();
+
                     }
                     System.out.println("Do you want to add schedule? y/n");
                     String cho2 = scan.nextLine();
@@ -124,7 +133,6 @@ public class StudentEnroll {
                                     account.setUsername(res[1]);
                                     account.setPass(res[2]);
                                     Accounts a = new Accounts(account.getId(), account.getUsername(), account.getPass());
-
                                     acc.add(a);
                                 }
                                 line = reader.readLine();
@@ -152,6 +160,7 @@ public class StudentEnroll {
                                     info.setfName(res[2]);
                                     info.setlName(res[3]);
                                     info.setNum(res[4]);
+                                    info.setAccId(account.getId());
                                     Infos i = new Infos(info.getId(), info.getAccId(), info.getfName(), info.getlName(), info.getNum());
                                     infoList.add(i);
                                 }
@@ -209,15 +218,15 @@ public class StudentEnroll {
                     String option3 = scan.nextLine();
                     if (option3.equals("1")) {
                         //FOR THE ACCOUNTS YOU WANT TO UPDATE
-                        displayInfo();
+                        Infos upInfo = new Infos();
+//                        displayInfo();
                         System.out.print("Enter ID you want to update: ");
                         String idInp = scan.nextLine();
                         //I STOPPED RIGHT HERE I NEED REST!!!!!!!!!!!!!
                         //I STOPPED HERE FOR UPDATING PERSONAL INFORMATION
-                        for (int i = 0; i < infoList.size(); i++) {
-                            if (infoList.get(i).getId() == Integer.parseInt(idInp)) {
+                        for (int i = 0; i < acc.size(); i++) {
+                            if (acc.get(i).getId() == Integer.parseInt(idInp)) {
                                 while (fnSuc == 0) {
-                                    displayInfo();
                                     try {
                                         System.out.print("Enter new firstname: ");
                                         String newfName = newer.nextLine();
@@ -226,12 +235,8 @@ public class StudentEnroll {
                                             if (Character.isDigit(c) || newfName.equals(" ")) {
                                                 throw new Exception("Invalid new first name input!");
                                             } else {
-                                                oldName = infoList.get(i).getfName();
-                                                newName = newfName;
-//                                                modifyFile("infos.txt", infoList.get(i).getfName(), newfName);
-                                                infoList.get(i).setfName(newfName);
-//                                                System.out.println("Updated successfully!");
-//                                                displayInfo();
+                                                info.setfName(newfName);
+//                                                infoList.get(i).setfName(newfName);
                                                 fnSuc = 1;
                                             }
                                             break;
@@ -249,10 +254,7 @@ public class StudentEnroll {
                                             if (Character.isDigit(ce) || newlName.equals(" ")) {
                                                 throw new Exception("Invalid new last name input!");
                                             } else {
-                                                oldName2 = infoList.get(l).getlName();
-                                                newName2 = newlName;
-//                                                modifyFile("infos.txt", infoList.get(i).getfName(), newfName);
-                                                infoList.get(l).setlName(newlName);
+                                                info.setlName(newlName);
                                                 lnSuc = 1;
                                             }
                                             break;
@@ -272,11 +274,10 @@ public class StudentEnroll {
                                                 if (Integer.parseInt(newAge) < 1) {
                                                     throw new Exception("Age should not be 0!");
                                                 } else {
-                                                    oldNum = infoList.get(i).getNum();
-                                                    newNum2 = newAge;
-//                                                modifyFile("infos.txt", infoList.get(i).getfName(), newfName);
-                                                    infoList.get(i).setNum(newAge);
+                                                    info.setNum(newAge);
                                                     ageSuc = 1;
+                                                    info.setAccId(account.getId());
+                                                    infoList.add(info);
 //                                                    System.out.println("New information saved\n");
                                                 }
                                             } catch (Exception e) {
@@ -287,14 +288,16 @@ public class StudentEnroll {
                                         System.out.println(e.getMessage());
                                     }
                                 }
+
+//                                Infos newInfo = new Infos();
                             }
                         }
                     } else if (option3.equals("2")) {
-                        displaySched();
+//                        displaySched();
                         System.out.print("Enter ID you want to update: ");
                         String idInp2 = scan.nextLine();
-                        for (int i = 0; i < schedList.size(); i++) {
-                            if (schedList.get(i).getId() == Integer.parseInt(idInp2)) {
+                        for (int i = 0; i < acc.size(); i++) {
+                            if (acc.get(i).getId() == Integer.parseInt(idInp2)) {
                                 while (courseSuc2 == 0) {
                                     try {
                                         System.out.print("Enter new subject: ");
@@ -304,10 +307,7 @@ public class StudentEnroll {
 //                                            if (Character.isDigit(co)) {
 //                                                throw new Exception("Invalid course input!");
 //                                            } else {
-                                        oldSub = schedList.get(i).getCourse();
-                                        newSub = newSub2;
-//                                                modifyFile("infos.txt", infoList.get(i).getfName(), newfName);
-                                        schedList.get(i).setCourse(newSub);
+                                        schedObj.setCourse(newSub2);
                                         courseSuc2 = 1;
 //                                            }
                                         break;
@@ -324,10 +324,7 @@ public class StudentEnroll {
 //                                        if (newUnit.matches("-?\\d+(\\.\\d+)?") == false) {
 //                                            throw new Exception("Invalid units input, must be a number");
 //                                        } else {
-                                        oldUnit = schedList.get(i).getUnits();
-                                        newUnit = newUnit2;
-//                                                modifyFile("infos.txt", infoList.get(i).getfName(), newfName);
-                                        schedList.get(i).setUnits(Integer.parseInt(newUnit));
+                                        schedObj.setUnits(Integer.parseInt(newUnit2));
                                         unitSuc2 = 1;
 //                                        }
                                     } catch (Exception e) {
@@ -342,10 +339,9 @@ public class StudentEnroll {
                                         if (newSched2.isEmpty()) {
                                             throw new Exception("Please fill in your new schedule!");
                                         } else {
-                                            oldSched = schedList.get(i).getSched();
-                                            newSched = newSched2;
-//                                                modifyFile("infos.txt", infoList.get(i).getfName(), newfName);
-                                            schedList.get(i).setSched(newSched);
+                                            schedObj.setSched(newSched2);
+                                            schedObj.setAccId(account.getId());
+                                            schedList.add(schedObj);
                                             schedSuc2 = 1;
                                         }
 
@@ -360,50 +356,113 @@ public class StudentEnroll {
                     break;
 
                 case "4":
-                    System.out.println("Delete by:\n1. Personal Information\n3. Schedule\n:");
+                    System.out.print("Delete by:\n1. Personal Information\n2. Schedule\n:");
                     String choice4 = scan.nextLine();
                     if (choice4.equals("1")) {
                         displayInfo();
-                        System.out.println("Delete personal information by ID: ");
+                        System.out.print("Delete personal information by ID: ");
                         String delInfo = scan.nextLine();
                         for (int i = 0; i < infoList.size(); i++) {
                             if (infoList.get(i).getId() == Integer.parseInt(delInfo)) {
                                 infoList.remove(i);
                             }
                         }
+                        System.out.println("Deleted successfully");
                     } else if (choice4.equals("2")) {
                         displaySched();
-                        System.out.println("Delete schedule by ID: ");
+                        System.out.print("Delete schedule by ID: ");
                         String delSched = scan.nextLine();
                         for (int i = 0; i < schedList.size(); i++) {
                             if (schedList.get(i).getId() == Integer.parseInt(delSched)) {
                                 schedList.remove(i);
-                                
-                                delInfo = schedList.get(i).toString();
                                 break;
                             }
-                            
+
                         }
                     }
+                    System.out.println("Deleted successfully");
+
                     break;
 
                 case "5":
-
+                    System.out.print("Search by:\n1. Account\n2. Personal Information\n3. Schedule\n:");
+                    String choice5 = scan.nextLine();
+                    if (choice5.equals("1")) {
+                        System.out.print("Search account by ID: ");
+                        String ai = scan.nextLine();
+                        System.out.printf("%-20s%-20s%-20s\n", "ID", "USERNAME", "PASSWORD");
+                        System.out.println(" ");
+                        for (int i = 0; i < acc.size(); ++i) {
+                            if (Integer.parseInt(ai) == (acc.get(i).getId())) {
+                                System.out.println(acc.get(i).toString());
+                            } else {
+                                System.out.println("NOT FOUND");
+                                break;
+                            }
+                        }
+                    } else if (choice5.equals("2")) {
+                        System.out.print("Search information by ID: ");
+                        String si = scan.nextLine();
+                        System.out.printf("==================================================="
+                                + "=================\n%-10s%-18s%-20s%-20s%-20s\n", "ID", "ACCOUNT ID",
+                                "FIRSTNAME", "LASTNAME", "AGE");
+                        System.out.println(" ");
+                        for (int i = 0; i < infoList.size(); ++i) {
+                            if (Integer.parseInt(si) == (infoList.get(i).getId())) {
+                                System.out.println(infoList.get(i).toString());
+                            }
+                        }
+                    } else if (choice5.equals("3")) {
+                        System.out.print("Search schedule by ID: ");
+                        String ss = scan.nextLine();
+                        System.out.printf("%-10s%-18s%-20s%-20s%-20s", "ID", "ACCOUNT ID", "COURSE", "UNITS", "SCHEDULE");
+                        System.out.println(" ");
+                        for (int i = 0; i < schedList.size(); ++i) {
+                            if (Integer.parseInt(ss) == (schedList.get(i).getId())) {
+                                System.out.println(schedList.get(i).toString());
+                            }
+                        }
+                    }
                     break;
                 case "6":
-                    modifyFile("infos.txt", oldName, newName);
-                    modifyFile("infos.txt", oldName2, newName2);
-                    modifyFile("infos.txt", oldNum, newNum2);
-                    modifyFile("schedule.txt", oldSub, newSub);
-                    modifyFile("schedule.txt", Integer.toString(oldUnit), newUnit);
-                    modifyFile("schedule.txt", oldSched, newSched);
                     saving();
-                    del("schedule.txt");
                     System.out.println("Updated Successfully");
                     break;
 
             }
         }
+    }
+
+    public ArrayList<String> getAccountInfo() {
+        return accountInfo;
+    }
+
+    public void setAccountInfo(ArrayList<String> accountInfo) {
+        this.accountInfo = accountInfo;
+    }
+
+    public ArrayList<Accounts> getAcc() {
+        return acc;
+    }
+
+    public void setAcc(ArrayList<Accounts> acc) {
+        this.acc = acc;
+    }
+
+    public ArrayList<Infos> getInfoList() {
+        return infoList;
+    }
+
+    public void setInfoList(ArrayList<Infos> infoList) {
+        this.infoList = infoList;
+    }
+
+    public ArrayList<Schedules> getSchedList() {
+        return schedList;
+    }
+
+    public void setSchedList(ArrayList<Schedules> schedList) {
+        this.schedList = schedList;
     }
 
     public void displayAcc() {
@@ -432,59 +491,12 @@ public class StudentEnroll {
         }
     }
 
-    public void del(String choices) throws FileNotFoundException, IOException {
-        String delChoice = choices;
-        File inputFile = new File(delChoice);
-        File tempFile = new File("myTempFile.txt");
+    public void update() throws IOException {
 
-        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-        //STOPPED HERE FOR UPDATING THE FILE UPON DELETING SOMETHING FROM ARRAYLIST
-        String lineToRemove = delInfo;
-        String currentLine;
+        FileWriter fWriter = new FileWriter("schedule.txt", true);
+        PrintWriter writer = new PrintWriter(fWriter);
+        BufferedReader reader = new BufferedReader(new FileReader("schedule.txt"));
 
-        while ((currentLine = reader.readLine()) != null) {
-            // trim newline when comparing with lineToRemove
-            String trimmedLine = currentLine.trim();
-            if (trimmedLine.equals(lineToRemove)) {
-                continue;
-            }
-            writer.write(currentLine + System.getProperty("line.separator"));
-        }
-        writer.close();
-        reader.close();
-        boolean successful = tempFile.renameTo(inputFile);
-    }
-
-    static void modifyFile(String filePath, String oldString, String newString) {
-        File fileToBeModified = new File(filePath);
-        String oldContent = "";
-        BufferedReader reader = null;
-        FileWriter writer = null;
-        try {
-            reader = new BufferedReader(new FileReader(fileToBeModified));
-            //Reading all the lines of input text file into oldContent
-            String line = reader.readLine();
-            while (line != null) {
-                oldContent = oldContent + line + System.lineSeparator();
-                line = reader.readLine();
-            }
-            //Replacing oldString with newString in the oldContent
-            String newContent = oldContent.replaceAll(oldString, newString);
-            //Rewriting the input text file with newContent
-            writer = new FileWriter(fileToBeModified);
-            writer.write(newContent);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                //Closing the resources
-                reader.close();
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void scheds() {
@@ -533,21 +545,8 @@ public class StudentEnroll {
                         throw new Exception("Please fill in your schedule!");
                     } else {
                         schedObj.setSched(sched);
-                        FileWriter fWriter = new FileWriter("schedule.txt", true);
-                        PrintWriter writer = new PrintWriter(fWriter);
-                        BufferedReader reader = new BufferedReader(new FileReader("schedule.txt"));
-
-                        String line = reader.readLine();
-                        int ids = 1;
-                        while (line != null) {
-                            if (line.length() != 0) {
-                                ids++;
-                            }
-                            line = reader.readLine();
-                        }
-
-                        writer.println(ids + "\t" + account.getId() + "\t" + schedObj.getCourse() + "\t" + schedObj.getUnits() + "\t" + schedObj.getSched() + "\n");
-                        writer.close();
+                        schedObj.setAccId(account.getId());
+                        schedList.add(schedObj);
                         schedSuc = 1;
                     }
 
@@ -563,13 +562,33 @@ public class StudentEnroll {
                 courseSuc = 0;
                 unitSuc = 0;
                 schedSuc = 0;
+
             } else {
                 allSchedSuc = 1;
             }
         }
     }
 
-    public void saving() {
+    public void clearTheFile() throws IOException {
+        FileWriter fwOb = new FileWriter("infos.txt", false);
+        FileWriter fwOb2 = new FileWriter("accounts.txt", false);
+        PrintWriter pwOb = new PrintWriter(fwOb, false);
+        PrintWriter pwOb2 = new PrintWriter(fwOb2, false);
+        pwOb.flush();
+        pwOb2.flush();
+        pwOb.close();
+        pwOb2.close();
+        fwOb.close();
+        fwOb2.close();
+        FileWriter fwOb3 = new FileWriter("schedule.txt", false);
+        PrintWriter pwOb3 = new PrintWriter(fwOb3, false);
+        pwOb3.flush();
+        pwOb3.close();
+
+    }
+
+    public void saving() throws IOException {
+        clearTheFile();
         try {
             FileWriter fWriter = new FileWriter("accounts.txt", true);
             PrintWriter writer = new PrintWriter(fWriter);
@@ -583,16 +602,17 @@ public class StudentEnroll {
                 line = reader.readLine();
             }
             account.setId(ids);
-            writer.println(ids + "\t" + account.getUsername() + "\t" + account.getPass() + "\t" + "\n");
-//            Accounts objt = new Accounts(ids, account.getUsername(), account.getPass());
+            for (int i = 0; i < acc.size(); ++i) {
+                writer.println(acc.get(i).getId()+ "\t" + acc.get(i).getUsername() + "\t" + acc.get(i).getPass() + "\n");
+            }
             writer.close();
             reader.close();
-//            accounts.put(Integer.toString(id), new String[]{Integer.toString(id), username, pass});
         } catch (IOException ioe) {
 
         }
 
         try {
+
             FileWriter fWriter = new FileWriter("infos.txt", true);
             PrintWriter writer = new PrintWriter(fWriter);
             BufferedReader reader = new BufferedReader(new FileReader("infos.txt"));
@@ -606,16 +626,37 @@ public class StudentEnroll {
                 }
                 line = reader.readLine();
             }
-//            info.setId(ids);
-            writer.println(ids + "\t" + account.getId() + "\t" + info.getfName() + "\t" + info.getlName() + "\t" + info.getNum() + "\t" + "\n");
-//            Infos objt = new Infos(ids, account.getId(), info.getfName(), info.getlName(), info.getNum());
+            for (int i = 0; i < infoList.size(); ++i) {
+                writer.println(ids + "\t" + infoList.get(i).getAccId() + "\t" + infoList.get(i).getfName() + "\t" + infoList.get(i).getlName() + "\t" + infoList.get(i).getNum() + "\t" + "\n");
+            }
             writer.close();
 
-//            infoList.add(objt);
         } catch (IOException ioe) {
             System.out.println("IOException: " + ioe.getMessage());
-        } finally {
-            System.out.println("Student is enrolled Successfully!\n");
+        }
+
+        try {
+
+            FileWriter fWriter = new FileWriter("schedule.txt", false);
+            PrintWriter writer = new PrintWriter(fWriter);
+            BufferedReader reader = new BufferedReader(new FileReader("schedule.txt"));
+            String line = reader.readLine();
+            int ids = 1;
+            while (line != null) {
+                if (line.length() != 0) {
+                    ids++;
+                }
+                line = reader.readLine();
+            }
+
+            for (int i = 0; i < schedList.size(); ++i) {
+                writer.println(ids + "\t" + schedList.get(i).getAccId() + "\t" + schedList.get(i).getCourse() + "\t" + schedList.get(i).getUnits() + "\t" + schedList.get(i).getSched() + "\n");
+            }
+
+            writer.close();
+            reader.close();
+        } catch (IOException ioe) {
+
         }
     }
 
@@ -633,5 +674,10 @@ public class StudentEnroll {
         courseSuc = 0;
         courseSuc2 = 0;
         unitSuc2 = 0;
+    }
+    
+    public int retrieveData(){
+        int id = acc.get(1).getId();
+        return id;
     }
 }

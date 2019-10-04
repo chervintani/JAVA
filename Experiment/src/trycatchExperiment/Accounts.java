@@ -32,6 +32,10 @@ public class Accounts {
         this.pass = pass;
     }
 
+    Accounts() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
     public String getUsername() {
         return username;
@@ -111,7 +115,9 @@ public class Accounts {
             }
         }
     }
-
+    
+    
+    
     public void reset() {
         userSuc = 0;
         numOpp = 0;

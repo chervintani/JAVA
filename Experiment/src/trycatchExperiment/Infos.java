@@ -92,6 +92,7 @@ public class Infos {
                     if (Character.isDigit(c) || fName.equals(" ")) {
                         throw new Exception("Invalid first name input!");
                     } else {
+                        
                         fnSuc = 1;
                     }
                     break;
