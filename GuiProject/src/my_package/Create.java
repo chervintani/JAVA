@@ -73,6 +73,7 @@ public class Create extends javax.swing.JFrame {
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
+        jTextField_username.setForeground(new java.awt.Color(102, 102, 102));
         jTextField_username.setText("Username");
         jTextField_username.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -93,6 +94,7 @@ public class Create extends javax.swing.JFrame {
             }
         });
 
+        jPasswordField_pass.setForeground(new java.awt.Color(102, 102, 102));
         jPasswordField_pass.setText("Password");
         jPasswordField_pass.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -113,7 +115,16 @@ public class Create extends javax.swing.JFrame {
             }
         });
 
+        jPasswordField_conpass.setForeground(new java.awt.Color(102, 102, 102));
         jPasswordField_conpass.setText("Password");
+        jPasswordField_conpass.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jPasswordField_conpassFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jPasswordField_conpassFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -263,6 +274,22 @@ public class Create extends javax.swing.JFrame {
         this.setVisible(false);
         new ChoiceEnrollment().setVisible(true);
     }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jPasswordField_conpassFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField_conpassFocusGained
+        if (jPasswordField_conpass.getText().equals("Password")) {
+            jPasswordField_conpass.setText("");
+        }
+        jPasswordField_conpass.setForeground(new Color(0, 0, 0));
+    }//GEN-LAST:event_jPasswordField_conpassFocusGained
+
+    private void jPasswordField_conpassFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordField_conpassFocusLost
+        if (jPasswordField_conpass.getText().equals("")) {
+            jPasswordField_conpass.setText("Password");
+            jPasswordField_conpass.setForeground(new Color(102, 102, 102));
+        } else {
+            jPasswordField_conpass.setForeground(new Color(0, 0, 0));
+        }
+    }//GEN-LAST:event_jPasswordField_conpassFocusLost
 
     /**
      * @param args the command line arguments

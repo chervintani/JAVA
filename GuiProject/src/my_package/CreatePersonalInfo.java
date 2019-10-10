@@ -72,6 +72,7 @@ public class CreatePersonalInfo extends javax.swing.JFrame {
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
+        jTextField_firstname.setForeground(new java.awt.Color(102, 102, 102));
         jTextField_firstname.setText("Firstname");
         jTextField_firstname.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -82,6 +83,7 @@ public class CreatePersonalInfo extends javax.swing.JFrame {
             }
         });
 
+        jTextField_lastname.setForeground(new java.awt.Color(102, 102, 102));
         jTextField_lastname.setText("Lastname");
         jTextField_lastname.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -92,6 +94,7 @@ public class CreatePersonalInfo extends javax.swing.JFrame {
             }
         });
 
+        jTextField_age.setForeground(new java.awt.Color(102, 102, 102));
         jTextField_age.setText("Age");
         jTextField_age.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -265,7 +268,8 @@ public class CreatePersonalInfo extends javax.swing.JFrame {
                                     String sql;
                                     //I STOPPED HERE FOR SVING TO DATABASE
                                     
-                                    sql = "INSERT INTO users_personalinfo VALUES('" + user_id + "','" +  + "','" + jPasswordField_pass.getText() + "')";
+                                    sql = "INSERT INTO users_personalinfo VALUES('" + user_id + "','LAST_INSERT_ID()','" + jTextField_firstname.getText() + "','"+
+                                            jTextField_lastname.getText()+"','"+jTextField_age.getText()+"')";
 
                                     stmt.executeUpdate(sql);
                                     int dialogRes = JOptionPane.showConfirmDialog(this, "Account is added successfully!\n"
@@ -277,9 +281,7 @@ public class CreatePersonalInfo extends javax.swing.JFrame {
                                     stmt.close();
                                     conn.close();
                                 } catch (SQLException se) {
-                                    se.getErrorCode();
-                                    JOptionPane.showMessageDialog(this, "Username already exists! Try another one", "Error",
-                                            JOptionPane.ERROR_MESSAGE);
+                                    se.printStackTrace();
                                 } catch (ClassNotFoundException ex) {
                                     Logger.getLogger(Create.class.getName()).log(Level.SEVERE, null, ex);
                                 }//end try
