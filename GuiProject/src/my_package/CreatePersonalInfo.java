@@ -106,7 +106,7 @@ public class CreatePersonalInfo extends javax.swing.JFrame {
         });
 
         jButton1.setBackground(new java.awt.Color(255, 102, 51));
-        jButton1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Submit");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -116,7 +116,7 @@ public class CreatePersonalInfo extends javax.swing.JFrame {
         });
 
         jButton2.setBackground(new java.awt.Color(255, 102, 51));
-        jButton2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Cancel");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -220,79 +220,96 @@ public class CreatePersonalInfo extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField_ageFocusLost
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-        this.setVisible(false);
-        new Create().setVisible(true);
+        int dialogRes = JOptionPane.showConfirmDialog(this, "Are you sure you want to cancel?");
+        if (dialogRes == JOptionPane.YES_OPTION) {
+            this.setVisible(false);
+            new ChoiceEnrollment().setVisible(true);
+        }
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        for (int i = 0; i < jTextField_firstname.getText().length(); i++) {
-            char c = jTextField_firstname.getText().charAt(i);
-            if (Character.isDigit(c) || jTextField_firstname.getText().equals(" ")) {
-                JOptionPane.showMessageDialog(this, "Invalid firstname input! Try another one", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            } else {
+        if (jTextField_firstname.getText().equals("") || jTextField_firstname.getText().equals("Firstname")
+                || jTextField_lastname.getText().equals("") || jTextField_lastname.getText().equals("Lastname")
+                || jTextField_age.getText().equals("") || jTextField_age.getText().equals("Age")) {
+            JOptionPane.showMessageDialog(this, "Please fill all the field!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+
+            for (int i = 0; i < jTextField_firstname.getText().length(); i++) {
+                char c = jTextField_firstname.getText().charAt(i);
+                if (Character.isDigit(c) || jTextField_firstname.getText().equals(" ")) {
+                    JOptionPane.showMessageDialog(this, "Invalid firstname input! Try another one", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    break;
+                }
                 for (int j = 0; j < jTextField_lastname.getText().length(); j++) {
                     char l = jTextField_lastname.getText().charAt(j);
                     if (Character.isDigit(l) || jTextField_lastname.getText().equals(" ")) {
                         JOptionPane.showMessageDialog(this, "Invalid lastname input! Try another one", "Error",
                                 JOptionPane.ERROR_MESSAGE);
-                    } else {
-                        if (jTextField_age.getText().matches("-?\\d+(\\.\\d+)?") == false) {
-                            JOptionPane.showMessageDialog(this, "Age must be a number", "Error",
-                                    JOptionPane.ERROR_MESSAGE);
-                        } else {
-                            if (Integer.parseInt(jTextField_age.getText()) < 1) {
-                                JOptionPane.showMessageDialog(this, "Age only 1 and above", "Error",
-                                        JOptionPane.ERROR_MESSAGE);
-                            } else {
-                                Connection conn = null;
-                                Statement stmt = null;
-
-                                try {
-                                    //STEP 2: Register JDBC driver
-                                    Class.forName("com.mysql.jdbc.Driver");
-                                    //STEP 3: Open a connection
-                                    System.out.println("Connecting to database...");
-                                    conn = DriverManager.getConnection("jdbc:mysql://localhost/chervz", "root", "");
-
-                                    //STEP 4: Execute a query
-                                    PreparedStatement pst1 = conn.prepareStatement("select max(id)+1 from users_personalinfo");
-                                    ResultSet rSet = pst1.executeQuery();
-                                    String user_id = "";
-                                    while (rSet.next()) {
-                                        user_id = rSet.getString(1);
-                                    }
-                                    System.out.println("Creating statement...");
-                                    System.out.println(user_id);
-                                    stmt = conn.createStatement();
-                                    String sql;
-                                    //I STOPPED HERE FOR SVING TO DATABASE
-                                    
-                                    sql = "INSERT INTO users_personalinfo VALUES('" + user_id + "','LAST_INSERT_ID()','" + jTextField_firstname.getText() + "','"+
-                                            jTextField_lastname.getText()+"','"+jTextField_age.getText()+"')";
-
-                                    stmt.executeUpdate(sql);
-                                    int dialogRes = JOptionPane.showConfirmDialog(this, "Account is added successfully!\n"
-                                            + "Do you want to add personal information?");
-                                    if (dialogRes == JOptionPane.YES_OPTION) {
-                                        this.setVisible(false);
-                                        new CreatePersonalInfo().setVisible(true);
-                                    }
-                                    stmt.close();
-                                    conn.close();
-                                } catch (SQLException se) {
-                                    se.printStackTrace();
-                                } catch (ClassNotFoundException ex) {
-                                    Logger.getLogger(Create.class.getName()).log(Level.SEVERE, null, ex);
-                                }//end try
-                                System.out.println("Goodbye!");
-                            }
-                        }
-
+                        break;
                     }
                 }
+                if (jTextField_age.getText().matches("-?\\d+(\\.\\d+)?") == false) {
+                    JOptionPane.showMessageDialog(this, "Age must be a number", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    break;
+                } else {
+                    if (Integer.parseInt(jTextField_age.getText()) < 1) {
+                        JOptionPane.showMessageDialog(this, "Age only 1 and above", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        break;
+                    } else {
+                        Connection conn = null;
+                        Statement stmt = null;
+
+                        try {
+                            //STEP 2: Register JDBC driver
+                            Class.forName("com.mysql.jdbc.Driver");
+                            //STEP 3: Open a connection
+                            System.out.println("Connecting to database...");
+                            conn = DriverManager.getConnection("jdbc:mysql://localhost/chervz", "root", "");
+
+                            //STEP 4: Execute a query
+                            PreparedStatement pst1 = conn.prepareStatement("select max(id)+1 from users_personalinfo");
+                            ResultSet rSet = pst1.executeQuery();
+                            String user_id = "";
+                            while (rSet.next()) {
+                                user_id = rSet.getString(1);
+                            }
+                            System.out.println("Creating statement...");
+                            System.out.println(user_id);
+                            stmt = conn.createStatement();
+                            String sql;
+                            //I STOPPED HERE FOR SVING TO DATABASE
+
+                            sql = "INSERT INTO users_personalinfo VALUES('" + user_id + "','LAST_INSERT_ID()','" + jTextField_firstname.getText() + "','"
+                                    + jTextField_lastname.getText() + "','" + jTextField_age.getText() + "')";
+
+                            stmt.executeUpdate(sql);
+                            int dialogRes = JOptionPane.showConfirmDialog(this, "Personal information is added successfully!\n"
+                                    + "Do you want to add schedule?");
+                            if (dialogRes == JOptionPane.YES_OPTION) {
+                                this.setVisible(false);
+                                new CreateSchedule().setVisible(true);
+                            }else{
+                                this.setVisible(false);
+                                new ChoiceEnrollment().setVisible(true);
+                            }
+                            stmt.close();
+                            conn.close();
+                        } catch (SQLException se) {
+                            se.printStackTrace();
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(Create.class.getName()).log(Level.SEVERE, null, ex);
+                        }//end try
+                        System.out.println("Goodbye!");
+                    }
+                }
+
             }
         }
+
     }//GEN-LAST:event_jButton1MouseClicked
 
     /**

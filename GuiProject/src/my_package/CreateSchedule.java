@@ -5,6 +5,9 @@
  */
 package my_package;
 
+import java.awt.Color;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author 2ndyrGroupC
@@ -30,7 +33,11 @@ public class CreateSchedule extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextField_subject = new javax.swing.JTextField();
+        jTextField_units = new javax.swing.JTextField();
+        jTextField_schedule = new javax.swing.JTextField();
+        jButton_submit = new javax.swing.JButton();
+        jButton_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,7 +64,61 @@ public class CreateSchedule extends javax.swing.JFrame {
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
-        jTextField1.setText("jTextField1");
+        jTextField_subject.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jTextField_subject.setForeground(new java.awt.Color(102, 102, 102));
+        jTextField_subject.setText("Subject");
+        jTextField_subject.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField_subjectFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField_subjectFocusLost(evt);
+            }
+        });
+
+        jTextField_units.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jTextField_units.setForeground(new java.awt.Color(102, 102, 102));
+        jTextField_units.setText("Units");
+        jTextField_units.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField_unitsFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField_unitsFocusLost(evt);
+            }
+        });
+
+        jTextField_schedule.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jTextField_schedule.setForeground(new java.awt.Color(102, 102, 102));
+        jTextField_schedule.setText("Schedule");
+        jTextField_schedule.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField_scheduleFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField_scheduleFocusLost(evt);
+            }
+        });
+
+        jButton_submit.setBackground(new java.awt.Color(255, 102, 51));
+        jButton_submit.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jButton_submit.setForeground(new java.awt.Color(255, 255, 255));
+        jButton_submit.setText("Submit");
+        jButton_submit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_submitMouseClicked(evt);
+            }
+        });
+
+        jButton_cancel.setBackground(new java.awt.Color(255, 102, 51));
+        jButton_cancel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jButton_cancel.setForeground(new java.awt.Color(255, 255, 255));
+        jButton_cancel.setText("Cancel");
+        jButton_cancel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_cancelMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -65,17 +126,36 @@ public class CreateSchedule extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(159, 159, 159)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(125, 125, 125)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jTextField_schedule, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jTextField_subject, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                .addComponent(jTextField_units))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(152, 152, 152)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton_submit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton_cancel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jTextField_subject, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 200, Short.MAX_VALUE))
+                .addComponent(jTextField_units, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField_schedule, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton_submit, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton_cancel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -91,6 +171,96 @@ public class CreateSchedule extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTextField_subjectFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_subjectFocusGained
+        if (jTextField_subject.getText().equals("Subject")) {
+            jTextField_subject.setText("");
+        }
+        jTextField_subject.setForeground(new Color(0, 0, 0));
+    }//GEN-LAST:event_jTextField_subjectFocusGained
+
+    private void jTextField_subjectFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_subjectFocusLost
+        if (jTextField_subject.getText().equals("")) {
+            jTextField_subject.setText("Subject");
+            jTextField_subject.setForeground(new Color(102, 102, 102));
+        }
+    }//GEN-LAST:event_jTextField_subjectFocusLost
+
+    private void jTextField_unitsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_unitsFocusGained
+        if (jTextField_units.getText().equals("Units")) {
+            jTextField_units.setText("");
+        }
+        jTextField_units.setForeground(new Color(0, 0, 0));
+
+    }//GEN-LAST:event_jTextField_unitsFocusGained
+
+    private void jTextField_unitsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_unitsFocusLost
+        if (jTextField_units.getText().equals("")) {
+            jTextField_units.setText("Units");
+            jTextField_units.setForeground(new Color(102, 102, 102));
+        }
+    }//GEN-LAST:event_jTextField_unitsFocusLost
+
+    private void jTextField_scheduleFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_scheduleFocusGained
+        if (jTextField_schedule.getText().equals("Schedule")) {
+            jTextField_schedule.setText("");
+        }
+        jTextField_schedule.setForeground(new Color(0, 0, 0));
+
+    }//GEN-LAST:event_jTextField_scheduleFocusGained
+
+    private void jTextField_scheduleFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_scheduleFocusLost
+        if (jTextField_schedule.getText().equals("")) {
+            jTextField_schedule.setText("Schedule");
+            jTextField_schedule.setForeground(new Color(102, 102, 102));
+        }
+    }//GEN-LAST:event_jTextField_scheduleFocusLost
+
+    private void jButton_cancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_cancelMouseClicked
+        int dialogRes = JOptionPane.showConfirmDialog(this, "Are you sure you want to cancel?");
+        if (dialogRes == JOptionPane.YES_OPTION) {
+            this.setVisible(false);
+            new ChoiceEnrollment().setVisible(true);
+        }
+    }//GEN-LAST:event_jButton_cancelMouseClicked
+
+    private void jButton_submitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_submitMouseClicked
+        if (jTextField_subject.getText().equals("") || jTextField_subject.getText().equals("Subject")
+                || jTextField_units.getText().equals("") || jTextField_units.getText().equals("Units")
+                || jTextField_schedule.getText().equals("") || jTextField_schedule.getText().equals("Schedule")) {
+            JOptionPane.showMessageDialog(this, "Please fill all the field!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+
+            for (int i = 0; i < jTextField_subject.getText().length(); i++) {
+                char co = jTextField_subject.getText().charAt(i);
+                if (Character.isDigit(co)) {
+                    JOptionPane.showMessageDialog(this, "Invalid subject input!", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    break;
+                } else {
+                    if (jTextField_units.getText().matches("-?\\d+(\\.\\d+)?") == false) {
+                        JOptionPane.showMessageDialog(this, "Invalid units input, must be a number!", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        break;
+                    } else {
+                        if (jTextField_schedule.getText().isEmpty()) {
+                            JOptionPane.showMessageDialog(this, "Please fill in your schedule!", "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else {
+
+                            //ADD TO THE DATABASE CODE HERE
+                            JOptionPane.showMessageDialog(this, "Schedule is added successfully!", "Success",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            this.setVisible(false);
+                            new ChoiceEnrollment().setVisible(true);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton_submitMouseClicked
 
     /**
      * @param args the command line arguments
@@ -128,9 +298,13 @@ public class CreateSchedule extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton_cancel;
+    private javax.swing.JButton jButton_submit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField_schedule;
+    private javax.swing.JTextField jTextField_subject;
+    private javax.swing.JTextField jTextField_units;
     // End of variables declaration//GEN-END:variables
 }
