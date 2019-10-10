@@ -8,8 +8,13 @@ package my_package;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -40,6 +45,8 @@ public class Create extends javax.swing.JFrame {
         jTextField_username = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jPasswordField_pass = new javax.swing.JPasswordField();
+        jButton2 = new javax.swing.JButton();
+        jPasswordField_conpass = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,6 +103,18 @@ public class Create extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(255, 102, 51));
+        jButton2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("Back");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
+
+        jPasswordField_conpass.setText("Password");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -105,12 +124,15 @@ public class Create extends javax.swing.JFrame {
                 .addContainerGap(162, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(205, 205, 205))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jPasswordField_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField_username, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextField_username, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPasswordField_conpass, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(146, 146, 146))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -121,9 +143,13 @@ public class Create extends javax.swing.JFrame {
                 .addComponent(jTextField_username, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPasswordField_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(62, 62, 62)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPasswordField_conpass, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(103, 103, 103))
+                .addGap(18, 18, 18)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -151,7 +177,6 @@ public class Create extends javax.swing.JFrame {
         if (jTextField_username.getText().equals("")) {
             jTextField_username.setText("Username");
             jTextField_username.setForeground(new Color(102, 102, 102));
-        } else {
         }
     }//GEN-LAST:event_jTextField_usernameFocusLost
 
@@ -172,57 +197,72 @@ public class Create extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField_passFocusLost
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-        String DB_URL = "jdbc:mysql://10.0.2.1/chervz";
 
-        //  Database credentials
-        String USER = "root";
-        String PASS = "pnpassword";
-        Connection conn = null;
-        Statement stmt = null;
-        try {
-            //STEP 2: Register JDBC driver
-            Class.forName(JDBC_DRIVER);
-            //STEP 3: Open a connection
-            System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        if (jTextField_username.getText().matches("-?\\d+(\\.\\d+)?")) {
+            JOptionPane.showMessageDialog(this, "Invalid username input!", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+        }
+        if (jTextField_username.getText().isEmpty() || jTextField_username.getText().contains(" ")) {
+            JOptionPane.showMessageDialog(this, "Invalid username input! There might be space provided or is empty", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+        }
+        if (jTextField_username.getText().equals("Username") || jPasswordField_pass.getText().equals("Password")) {
+            JOptionPane.showMessageDialog(this, "Please fill all the field", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+        } else if (jPasswordField_pass.getText().length() < 8) {
+            JOptionPane.showMessageDialog(this, "Password must be 8 characters above", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+        }else if(!jPasswordField_pass.getText().equals(jPasswordField_conpass.getText())){
+            JOptionPane.showMessageDialog(this, "Password not matched!", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+        } else {
+            Connection conn = null;
+            Statement stmt = null;
 
-            //STEP 4: Execute a query
-            System.out.println("Creating statement...");
-            stmt = conn.createStatement();
-            String sql;
-            sql = "INSERT INTO users_account VALUES('1','"+jTextField_username+"','"+jPasswordField_pass+"')";
-            stmt.executeUpdate(sql);
-
-//            //STEP 6: Clean-up environment
-//            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException se) {
-            //Handle errors for JDBC
-            se.printStackTrace();
-        } catch (Exception e) {
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        } finally {
-            //finally block used to close resources
             try {
-                if (stmt != null) {
-                    stmt.close();
+                //STEP 2: Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                //STEP 3: Open a connection
+                System.out.println("Connecting to database...");
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/chervz", "root", "");
+
+                //STEP 4: Execute a query
+                PreparedStatement pst1 = conn.prepareStatement("select max(id)+1 from users_account");
+                ResultSet rSet = pst1.executeQuery();
+                String user_id = "";
+                while (rSet.next()) {
+                    user_id = rSet.getString(1);
                 }
-            } catch (SQLException se2) {
-            }// nothing we can do
-            try {
-                if (conn != null) {
-                    conn.close();
+                System.out.println("Creating statement...");
+                System.out.println(user_id);
+                stmt = conn.createStatement();
+                String sql;
+                sql = "INSERT INTO users_account VALUES('" + user_id + "','" + jTextField_username.getText() + "','" + jPasswordField_pass.getText() + "')";
+
+                stmt.executeUpdate(sql);
+                int dialogRes = JOptionPane.showConfirmDialog(this, "Account is added successfully!\n"
+                        + "Do you want to add personal information?");
+                if (dialogRes == JOptionPane.YES_OPTION) {
+                    this.setVisible(false);
+                    new CreatePersonalInfo().setVisible(true);
                 }
+                stmt.close();
+                conn.close();
             } catch (SQLException se) {
-                se.printStackTrace();
-            }//end finally try
-        }//end try
-        System.out.println("Goodbye!");
-
+                se.getErrorCode();
+                JOptionPane.showMessageDialog(this, "Username already exists! Try another one", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Create.class.getName()).log(Level.SEVERE, null, ex);
+            }//end try
+            System.out.println("Goodbye!");
+        }
     }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        this.setVisible(false);
+        new ChoiceEnrollment().setVisible(true);
+    }//GEN-LAST:event_jButton2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -269,9 +309,11 @@ public class Create extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPasswordField jPasswordField_conpass;
     private javax.swing.JPasswordField jPasswordField_pass;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JTextField jTextField_username;

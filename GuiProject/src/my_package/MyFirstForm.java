@@ -266,24 +266,26 @@ public class MyFirstForm extends javax.swing.JFrame {
         System.out.println(username);
         System.out.println(password);
         if (username.equals("admin") && password.equals("adminpass")) {
-            JOptionPane.showMessageDialog(this, "You are successfully logged in!");
+                        JOptionPane.showMessageDialog(this, "You are successfully logged in!", "Success", 
+				JOptionPane.INFORMATION_MESSAGE);
 
             this.setVisible(false);
             new ChoiceEnrollment().setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(this, "Login failed!");
+            JOptionPane.showMessageDialog(this, "Login failed!", "Error", 
+				JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jPasswordFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordFieldFocusGained
-        if (jPasswordField.getPassword().equals("Password")) {
+        if (jPasswordField.getText().equals("Password")) {
             jPasswordField.setText("");
         }
         jPasswordField.setForeground(new Color(0, 0, 0));
     }//GEN-LAST:event_jPasswordFieldFocusGained
 
     private void jPasswordFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordFieldFocusLost
-        if (jPasswordField.getPassword().equals("")) {
+        if (jPasswordField.getText().equals("")) {
             jPasswordField.setText("Password");
             jPasswordField.setForeground(new Color(102, 102, 102));
         } else {
