@@ -18,6 +18,7 @@ public class ChoiceEnrollment extends javax.swing.JFrame {
      */
     public ChoiceEnrollment() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -95,6 +96,11 @@ public class ChoiceEnrollment extends javax.swing.JFrame {
         jButton_update.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jButton_update.setForeground(new java.awt.Color(255, 255, 255));
         jButton_update.setText("Update");
+        jButton_update.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_updateMouseClicked(evt);
+            }
+        });
         jButton_update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_updateActionPerformed(evt);
@@ -105,6 +111,11 @@ public class ChoiceEnrollment extends javax.swing.JFrame {
         jButton_delete.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jButton_delete.setForeground(new java.awt.Color(255, 255, 255));
         jButton_delete.setText("Delete");
+        jButton_delete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_deleteMouseClicked(evt);
+            }
+        });
         jButton_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_deleteActionPerformed(evt);
@@ -208,12 +219,19 @@ public class ChoiceEnrollment extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_createMouseClicked
 
     private void jButton_retrieveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_retrieveMouseClicked
-        int dialogRes = JOptionPane.showConfirmDialog(this, "");
-        if (dialogRes == JOptionPane.YES_OPTION) {
-            this.setVisible(false);
-            new ChoiceEnrollment().setVisible(true);
-        }
+        this.setVisible(false);
+        new RetrieveChoice().setVisible(true);
     }//GEN-LAST:event_jButton_retrieveMouseClicked
+
+    private void jButton_updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_updateMouseClicked
+        this.setVisible(false);
+        new UpdateChoice().setVisible(true);
+    }//GEN-LAST:event_jButton_updateMouseClicked
+
+    private void jButton_deleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_deleteMouseClicked
+        this.setVisible(false);
+        new DeleteChoice().setVisible(true);
+    }//GEN-LAST:event_jButton_deleteMouseClicked
 
     /**
      * @param args the command line arguments

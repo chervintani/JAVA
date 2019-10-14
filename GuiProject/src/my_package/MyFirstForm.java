@@ -21,6 +21,7 @@ public class MyFirstForm extends javax.swing.JFrame {
      */
     public MyFirstForm() {
         initComponents();
+        this.setLocationRelativeTo(null);
         jPanel3.setFocusable(true);
     }
 

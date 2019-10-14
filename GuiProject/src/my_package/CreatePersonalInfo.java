@@ -5,6 +5,9 @@
  */
 package my_package;
 
+import compositions.Account;
+import compositions.Database;
+import compositions.PersonalInfo;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,8 +28,17 @@ public class CreatePersonalInfo extends javax.swing.JFrame {
     /**
      * Creates new form CreatePersonalInfo
      */
+//    static Account account = null;
+    private Database db = new Database();
+    ChoiceEnrollment mainMenu;
+
+    public CreatePersonalInfo(Account accounts) {
+        initComponents();
+    }
+
     public CreatePersonalInfo() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -228,6 +240,9 @@ public class CreatePersonalInfo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        String firstname = jTextField_firstname.getText();
+        String lastname = jTextField_lastname.getText();
+        String age = jTextField_age.getText();
         if (jTextField_firstname.getText().equals("") || jTextField_firstname.getText().equals("Firstname")
                 || jTextField_lastname.getText().equals("") || jTextField_lastname.getText().equals("Lastname")
                 || jTextField_age.getText().equals("") || jTextField_age.getText().equals("Age")) {
@@ -260,6 +275,34 @@ public class CreatePersonalInfo extends javax.swing.JFrame {
                                 JOptionPane.ERROR_MESSAGE);
                         break;
                     } else {
+                        System.out.println("Sucess");
+                        PersonalInfo pi = new PersonalInfo();
+                        pi.setfName(firstname);
+                        pi.setlName(lastname);
+                        pi.setAge(Integer.valueOf(age));
+//                        account = new Account();
+//                        account.setInfo(pi);
+
+//                        int results[] = db.create(account);
+
+//                        if (results[0] == 1 && results[1] == 1) {
+//                            int dialogRes = JOptionPane.showConfirmDialog(this, "Information has been added successfully\n"
+//                                    + "Do you want to add schedules?");
+//                            if (dialogRes == JOptionPane.YES_OPTION) {
+//
+//                                account.setId(results[3]);
+//                                CreateSchedule sched = new CreateSchedule(account);
+//                                sched.setVisible(true);
+//                                this.setVisible(false);
+//
+//                            } else {
+//                                this.setVisible(false);
+//                                new ChoiceEnrollment().setVisible(true);
+//                            }
+////
+//                        } else {
+//                            JOptionPane.showMessageDialog(this, "Save Failed !", "Error", JOptionPane.ERROR_MESSAGE);
+//                        }
                         Connection conn = null;
                         Statement stmt = null;
 
@@ -268,22 +311,26 @@ public class CreatePersonalInfo extends javax.swing.JFrame {
                             Class.forName("com.mysql.jdbc.Driver");
                             //STEP 3: Open a connection
                             System.out.println("Connecting to database...");
-                            conn = DriverManager.getConnection("jdbc:mysql://localhost/chervz", "root", "");
+                            conn = DriverManager.getConnection("jdbc:mysql://localhost/chervdb", "root", "");
 
                             //STEP 4: Execute a query
-                            PreparedStatement pst1 = conn.prepareStatement("select max(id)+1 from users_personalinfo");
+                            PreparedStatement pst1 = conn.prepareStatement("select max(id)+1 from tbl_info");
                             ResultSet rSet = pst1.executeQuery();
                             String user_id = "";
                             while (rSet.next()) {
                                 user_id = rSet.getString(1);
                             }
+                            PreparedStatement pst = conn.prepareStatement("select max(id) from tbl_accounts");
+                            ResultSet rs = pst.executeQuery();
+                            String acc_id = "";
+                            while (rs.next()) {
+                                acc_id = rs.getString(1);
+                            }
                             System.out.println("Creating statement...");
-                            System.out.println(user_id);
                             stmt = conn.createStatement();
                             String sql;
                             //I STOPPED HERE FOR SVING TO DATABASE
-
-                            sql = "INSERT INTO users_personalinfo VALUES('" + user_id + "','LAST_INSERT_ID()','" + jTextField_firstname.getText() + "','"
+                            sql = "INSERT INTO tbl_info VALUES('" + user_id + "','"+acc_id+"','" + jTextField_firstname.getText() + "','"
                                     + jTextField_lastname.getText() + "','" + jTextField_age.getText() + "')";
 
                             stmt.executeUpdate(sql);
@@ -292,7 +339,7 @@ public class CreatePersonalInfo extends javax.swing.JFrame {
                             if (dialogRes == JOptionPane.YES_OPTION) {
                                 this.setVisible(false);
                                 new CreateSchedule().setVisible(true);
-                            }else{
+                            } else {
                                 this.setVisible(false);
                                 new ChoiceEnrollment().setVisible(true);
                             }
@@ -304,9 +351,9 @@ public class CreatePersonalInfo extends javax.swing.JFrame {
                             Logger.getLogger(Create.class.getName()).log(Level.SEVERE, null, ex);
                         }//end try
                         System.out.println("Goodbye!");
+                        break;
                     }
                 }
-
             }
         }
 

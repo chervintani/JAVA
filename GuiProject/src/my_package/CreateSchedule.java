@@ -5,7 +5,16 @@
  */
 package my_package;
 
+import compositions.Account;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,7 +26,14 @@ public class CreateSchedule extends javax.swing.JFrame {
     /**
      * Creates new form CreateSchedule
      */
+    static Account account = null;
+
     public CreateSchedule() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+    }
+
+    public CreateSchedule(Account account) {
         initComponents();
     }
 
@@ -248,12 +264,57 @@ public class CreateSchedule extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(this, "Please fill in your schedule!", "Error",
                                     JOptionPane.ERROR_MESSAGE);
                         } else {
-
+                            String subject = jTextField_subject.getText();
+                            String units = jTextField_units.getText();
+                            String schedule = jTextField_schedule.getText();
                             //ADD TO THE DATABASE CODE HERE
-                            JOptionPane.showMessageDialog(this, "Schedule is added successfully!", "Success",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                            this.setVisible(false);
-                            new ChoiceEnrollment().setVisible(true);
+                            Connection conn = null;
+                            Statement stmt = null;
+
+                            try {
+                                //STEP 2: Register JDBC driver
+                                Class.forName("com.mysql.jdbc.Driver");
+                                //STEP 3: Open a connection
+                                System.out.println("Connecting to database...");
+                                conn = DriverManager.getConnection("jdbc:mysql://localhost/chervdb", "root", "");
+
+                                //STEP 4: Execute a query
+                                PreparedStatement pst1 = conn.prepareStatement("select max(id)+1 from tbl_schedules");
+                                ResultSet rSet = pst1.executeQuery();
+                                String user_id = "";
+                                while (rSet.next()) {
+                                    user_id = rSet.getString(1);
+                                }
+                                PreparedStatement pst = conn.prepareStatement("select max(id) from tbl_accounts");
+                                ResultSet rs = pst.executeQuery();
+                                String acc_id = "";
+                                while (rs.next()) {
+                                    acc_id = rs.getString(1);
+                                }
+                                System.out.println("Creating statement...");
+                                stmt = conn.createStatement();
+                                String sql;
+                                //I STOPPED HERE FOR SVING TO DATABASE
+                                sql = "INSERT INTO tbl_schedules VALUES('" + user_id + "','" + acc_id + "','" + subject + "','"
+                                        + units + "','" + schedule + "')";
+
+                                stmt.executeUpdate(sql);
+                                int dialogRes = JOptionPane.showConfirmDialog(this, "Schedule is added successfully!\n"
+                                        + "Do you want to add more?");
+                                if (dialogRes == JOptionPane.YES_OPTION) {
+                                    this.setVisible(false);
+                                    new CreateSchedule().setVisible(true);
+                                } else {
+                                    this.setVisible(false);
+                                    new ChoiceEnrollment().setVisible(true);
+                                }
+                                stmt.close();
+                                conn.close();
+                            } catch (SQLException se) {
+                                se.printStackTrace();
+                            } catch (ClassNotFoundException ex) {
+                                Logger.getLogger(Create.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                             break;
                         }
                     }

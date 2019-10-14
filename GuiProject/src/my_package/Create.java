@@ -5,6 +5,8 @@
  */
 package my_package;
 
+import compositions.Account;
+import compositions.Database;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,8 +27,13 @@ public class Create extends javax.swing.JFrame {
     /**
      * Creates new form Create
      */
+    private Database db;
+    Account account = new Account();
+//    Database db = new Database();
+
     public Create() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -208,65 +215,100 @@ public class Create extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField_passFocusLost
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-
-        if (jTextField_username.getText().matches("-?\\d+(\\.\\d+)?")) {
+        String username = jTextField_username.getText();
+        String password = jPasswordField_pass.getText();
+        if (username.matches("-?\\d+(\\.\\d+)?")) {
             JOptionPane.showMessageDialog(this, "Invalid username input!", "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.ERROR_MESSAGE);
         }
-        if (jTextField_username.getText().isEmpty() || jTextField_username.getText().contains(" ")) {
+        if (username.isEmpty() || username.contains(" ")) {
             JOptionPane.showMessageDialog(this, "Invalid username input! There might be space provided or is empty", "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.ERROR_MESSAGE);
         }
-        if (jTextField_username.getText().equals("Username") || jPasswordField_pass.getText().equals("Password")) {
+        if (username.equals("Username") || password.equals("Password")) {
             JOptionPane.showMessageDialog(this, "Please fill all the field", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-        } else if (jPasswordField_pass.getText().length() < 8) {
+                    JOptionPane.ERROR_MESSAGE);
+        } else if (password.length() < 8) {
             JOptionPane.showMessageDialog(this, "Password must be 8 characters above", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-        }else if(!jPasswordField_pass.getText().equals(jPasswordField_conpass.getText())){
+                    JOptionPane.ERROR_MESSAGE);
+        } else if (!password.equals(jPasswordField_conpass.getText())) {
             JOptionPane.showMessageDialog(this, "Password not matched!", "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.ERROR_MESSAGE);
         } else {
-            Connection conn = null;
-            Statement stmt = null;
+            account = new Account();
+            account.setUsername(username);
+            account.setPassword(password);
+            db = new Database();
+            int results[] = db.create(account);
+            int dialogRes = JOptionPane.showConfirmDialog(this, "Do you want to add information?");
+            if (dialogRes == JOptionPane.YES_OPTION) {
+                CreatePersonalInfo info = new CreatePersonalInfo(account);
+                info.setVisible(true);
+                this.setVisible(false);
 
-            try {
-                //STEP 2: Register JDBC driver
-                Class.forName("com.mysql.jdbc.Driver");
-                //STEP 3: Open a connection
-                System.out.println("Connecting to database...");
-                conn = DriverManager.getConnection("jdbc:mysql://localhost/chervz", "root", "");
+            }
+//            else {
+//                int dialogRes2 = JOptionPane.showConfirmDialog(this, "Do you want to add schedule?");
+//                if (dialogRes2 == JOptionPane.YES_OPTION) {
+//                    this.setVisible(false);
+//                    new CreateSchedule().setVisible(true);
+//                } else {
+//                    
+//                    if (results[0] == 1) {
+//                        JOptionPane.showMessageDialog(this,
+//                                "Account Save !");
+//                    } else {
+//                        JOptionPane.showMessageDialog(this, "Save Failed !", "Error", JOptionPane.ERROR_MESSAGE);
+//                    }
+//                    
+//                    account.setId(results[3]);
+//                    this.setVisible(false);
+//                    new ChoiceEnrollment().setVisible(true);
+//                }
+//
+//            }
+//
+//            Connection conn = null;
+//            Statement stmt = null;
+//
+//            try {
+//                //STEP 2: Register JDBC driver
+//                Class.forName("com.mysql.jdbc.Driver");
+//                //STEP 3: Open a connection
+//                System.out.println("Connecting to database...");
+//                conn = DriverManager.getConnection("jdbc:mysql://localhost/chervz", "root", "");
+//
+//                //STEP 4: Execute a query
+//                PreparedStatement pst1 = conn.prepareStatement("select max(id)+1 from users_account");
+//                ResultSet rSet = pst1.executeQuery();
+//                String user_id = "";
+//                while (rSet.next()) {
+//                    user_id = rSet.getString(1);
+//                }
+//                System.out.println("Creating statement...");
+//                System.out.println(user_id);
+//                stmt = conn.createStatement();
+//                String sql;
+//                sql = "INSERT INTO users_account VALUES('" + user_id + "','" + jTextField_username.getText() + "','" + jPasswordField_pass.getText() + "')";
+//
+//                stmt.executeUpdate(sql);
+//                int dialogRes = JOptionPane.showConfirmDialog(this, "Account is added successfully!\n"
+//                        + "Do you want to add personal information?");
+//                if (dialogRes == JOptionPane.YES_OPTION) {
+//                    this.setVisible(false);
+//                    new CreatePersonalInfo().setVisible(true);
+//                }
+//                stmt.close();
+//                conn.close();
+//            } catch (SQLException se) {
+//                se.getErrorCode();
+//                JOptionPane.showMessageDialog(this, "Username already exists! Try another one", "Error",
+//                        JOptionPane.ERROR_MESSAGE);
+//            } catch (ClassNotFoundException ex) {
+//                Logger.getLogger(Create.class.getName()).log(Level.SEVERE, null, ex);
+//            }//end try
+//            System.out.println("Goodbye!");
 
-                //STEP 4: Execute a query
-                PreparedStatement pst1 = conn.prepareStatement("select max(id)+1 from users_account");
-                ResultSet rSet = pst1.executeQuery();
-                String user_id = "";
-                while (rSet.next()) {
-                    user_id = rSet.getString(1);
-                }
-                System.out.println("Creating statement...");
-                System.out.println(user_id);
-                stmt = conn.createStatement();
-                String sql;
-                sql = "INSERT INTO users_account VALUES('" + user_id + "','" + jTextField_username.getText() + "','" + jPasswordField_pass.getText() + "')";
-
-                stmt.executeUpdate(sql);
-                int dialogRes = JOptionPane.showConfirmDialog(this, "Account is added successfully!\n"
-                        + "Do you want to add personal information?");
-                if (dialogRes == JOptionPane.YES_OPTION) {
-                    this.setVisible(false);
-                    new CreatePersonalInfo().setVisible(true);
-                }
-                stmt.close();
-                conn.close();
-            } catch (SQLException se) {
-                se.getErrorCode();
-                JOptionPane.showMessageDialog(this, "Username already exists! Try another one", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Create.class.getName()).log(Level.SEVERE, null, ex);
-            }//end try
-            System.out.println("Goodbye!");
         }
     }//GEN-LAST:event_jButton1MouseClicked
 
